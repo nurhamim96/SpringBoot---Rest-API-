@@ -1,8 +1,8 @@
 package com.test.msemployeeservice.controller;
 
-import com.test.msemployeeservice.model.CreateEmployeeRequest;
-import com.test.msemployeeservice.model.EmployeeResponse;
-import com.test.msemployeeservice.model.UpdateEmployeeRequest;
+import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
+import com.test.msemployeeservice.model.response.EmployeeResponse;
+import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
 import com.test.msemployeeservice.model.WebResponse;
 import com.test.msemployeeservice.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ public class EmployeeController {
 
     @PostMapping(value = "/add",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<?> create(@RequestBody CreateEmployeeRequest request) {
-
         EmployeeResponse employeeResponse = employeeService.create(request);
 
         return WebResponse.builder()

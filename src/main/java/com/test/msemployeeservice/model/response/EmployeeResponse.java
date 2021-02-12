@@ -1,4 +1,4 @@
-package com.test.msemployeeservice.model;
+package com.test.msemployeeservice.model.response;
 
 import com.test.msemployeeservice.config.constant.Gender;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeResponse {
-    private String employeeNo;
+    private String id;
 
     private Date birthDate;
 

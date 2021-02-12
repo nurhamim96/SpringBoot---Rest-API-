@@ -1,4 +1,4 @@
-package com.test.msemployeeservice.model;
+package com.test.msemployeeservice.model.request;
 
 import com.test.msemployeeservice.config.constant.Gender;
 import lombok.AllArgsConstructor;
@@ -14,9 +14,9 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateEmployeeRequest {
-//    @NotBlank(message = "NotBlank")
-//    private String employeeNo;
+public class UpdateEmployeeRequest {
+    @NotBlank(message = "NotBlank")
+    private String id;
 
     @NotBlank(message = "NotBlank")
     private Date birthDate;
@@ -32,4 +32,5 @@ public class CreateEmployeeRequest {
 
     @NotBlank(message = "NotBlank")
     private Date hireDate;
+
 }

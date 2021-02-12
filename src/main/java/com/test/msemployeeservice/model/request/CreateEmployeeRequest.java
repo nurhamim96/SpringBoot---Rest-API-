@@ -1,11 +1,14 @@
-package com.test.msemployeeservice.model;
+package com.test.msemployeeservice.model.request;
 
 import com.test.msemployeeservice.config.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -14,9 +17,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateEmployeeRequest {
-    @NotBlank(message = "NotBlank")
-    private String employeeNo;
+public class CreateEmployeeRequest {
 
     @NotBlank(message = "NotBlank")
     private Date birthDate;
@@ -33,4 +34,9 @@ public class UpdateEmployeeRequest {
     @NotBlank(message = "NotBlank")
     private Date hireDate;
 
+//    @NotBlank(message = "NotBlank")
+//    private Date createdAt;
+//
+//    @NotBlank(message = "NotBlank")
+//    private Date updateAt;
 }

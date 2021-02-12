@@ -1,9 +1,9 @@
 package com.test.msemployeeservice.service.implement;
 
 import com.test.msemployeeservice.entity.Employee;
-import com.test.msemployeeservice.model.CreateEmployeeRequest;
-import com.test.msemployeeservice.model.EmployeeResponse;
-import com.test.msemployeeservice.model.UpdateEmployeeRequest;
+import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
+import com.test.msemployeeservice.model.response.EmployeeResponse;
+import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
 import com.test.msemployeeservice.repository.EmployeeRepository;
 import com.test.msemployeeservice.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,30 +20,32 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-//    Date date = new Date();
 
     @Override
     public EmployeeResponse create(CreateEmployeeRequest request) {
 
+        var date = new Date();
+
         Employee employee = Employee.builder()
-//                .employeeNo(UUID.randomUUID().toString())
                 .birthDate(request.getBirthDate())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .gender(request.getGender())
                 .hireDate(request.getHireDate())
-//                .createdAt(date)
+                .createdAt(date)
+                .updateAt(null)
                 .build();
 
         employee = employeeRepository.save(employee);
         return EmployeeResponse.builder()
-                .employeeNo(employee.getEmployeeNo())
+                .id(employee.getId())
                 .birthDate(employee.getBirthDate())
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .gender(employee.getGender())
                 .hireDate(employee.getHireDate())
                 .createdAt(employee.getCreatedAt())
+                .updateAt(employee.getUpdateAt())
                 .build();
     }
 
@@ -52,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse get(String employeeNo) {
         Optional<Employee> employee = employeeRepository.findById(employeeNo);
         return EmployeeResponse.builder()
-                .employeeNo(employee.get().getEmployeeNo())
+                .id(employee.get().getId())
                 .birthDate(employee.get().getBirthDate())
                 .firstName(employee.get().getFirstName())
                 .lastName(employee.get().getLastName())
@@ -65,23 +66,31 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse update(UpdateEmployeeRequest request) {
 
+        var created = get(request.getId());
+
+        var date = new Date();
+
             Employee data = Employee.builder()
-                    .employeeNo(request.getEmployeeNo())
+                    .id(request.getId())
                     .birthDate(request.getBirthDate())
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
                     .hireDate(request.getHireDate())
                     .gender(request.getGender())
+                    .createdAt(created.getCreatedAt())
+                    .updateAt(date)
                     .build();
-            employeeRepository.save(data);
+            data = employeeRepository.save(data);
 
         return EmployeeResponse.builder()
-                .employeeNo(request.getEmployeeNo())
-                .birthDate(request.getBirthDate())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .hireDate(request.getHireDate())
-                .gender(request.getGender())
+                .id(data.getId())
+                .birthDate(data.getBirthDate())
+                .firstName(data.getFirstName())
+                .lastName(data.getLastName())
+                .hireDate(data.getHireDate())
+                .gender(data.getGender())
+                .createdAt(data.getCreatedAt())
+                .updateAt(data.getUpdateAt())
                 .build();
     }
 
@@ -89,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeResponse> list() {
         return employeeRepository.findAll().stream()
                 .map(value -> EmployeeResponse.builder()
-                        .employeeNo(value.getEmployeeNo())
+                        .id(value.getId())
                         .birthDate(value.getBirthDate())
                         .firstName(value.getFirstName())
                         .lastName(value.getLastName())
@@ -102,8 +111,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void delete(String employeeNo) {
-        Optional<Employee> employee = employeeRepository.findById(employeeNo);
+    public void delete(String id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
         employeeRepository.delete(employee.get());
     }
 }

@@ -1,17 +1,16 @@
 package com.test.msemployeeservice.service;
 
-import com.test.msemployeeservice.model.CreateEmployeeRequest;
-import com.test.msemployeeservice.model.EmployeeResponse;
-import com.test.msemployeeservice.model.UpdateEmployeeRequest;
+import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
+import com.test.msemployeeservice.model.response.EmployeeResponse;
+import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
 
-import javax.validation.Valid;
 import java.util.List;
 
 public interface EmployeeService {
 
     EmployeeResponse create(CreateEmployeeRequest request);
 
-    EmployeeResponse get(String employeeNo);
+    EmployeeResponse get(String id);
 
     EmployeeResponse update(UpdateEmployeeRequest request);
 
