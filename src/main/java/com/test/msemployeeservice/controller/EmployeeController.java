@@ -56,6 +56,7 @@ public class EmployeeController {
     @GetMapping(value = "/{employeeNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<EmployeeResponse> get(@PathVariable("employeeNo") String employeeNo) {
         EmployeeResponse employeeResponse = employeeService.get(employeeNo);
+
         return WebResponse.<EmployeeResponse>builder()
                 .code(HttpStatus.OK.value())
                 .status(HttpStatus.OK.name())
