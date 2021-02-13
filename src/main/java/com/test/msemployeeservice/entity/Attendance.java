@@ -45,16 +45,16 @@ public class Attendance {
 
     private Date hireDate;
 
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
+    @Column(name = "total_working_days", columnDefinition="int(10) default 0")
+    private Integer totalWorkingDays = 0;
+
     private Long salary;
 
-
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
     private Long totalSalary;
 
-    @Column(name = "created_at", updatable = false)
-    private Date createdAt;
+    @Column(name = "check_in", updatable = false)
+    private Date checkIn;
 
-    @Column(name = "updated_at")
-    private Date updateAt;
+    @Column(name = "check_out")
+    private Date checkOut;
 }

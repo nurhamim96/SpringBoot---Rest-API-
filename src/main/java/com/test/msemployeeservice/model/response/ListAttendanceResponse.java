@@ -1,6 +1,5 @@
 package com.test.msemployeeservice.model.response;
 
-import com.test.msemployeeservice.config.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,29 +7,23 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeResponse {
+public class ListAttendanceResponse {
     private String id;
 
-    private Date birthDate;
+    private Date dateOfWork;
+
+    private String employeeId;
 
     private String firstName;
 
     private String lastName;
 
-    private Gender gender;
+    private Date checkIn;
 
-    private Date hireDate;
-
-    private Long totalWorkingDays;
-
-    private Long totalSalary;
-
-
-    private Date createdAt;
-
-    private Date updateAt;
+    private Date checkOut;
 }

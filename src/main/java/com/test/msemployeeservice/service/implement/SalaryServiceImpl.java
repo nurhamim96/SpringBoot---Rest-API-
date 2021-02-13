@@ -49,14 +49,12 @@ public class SalaryServiceImpl implements SalaryService {
         Salary salary = Salary.builder()
                 .id(request.getId())
                 .salary(request.getSalary())
-                .totalSalary(request.getTotalSalary())
                 .build();
         salary = salaryRepository.save(salary);
 
         return SalaryResponse.builder()
                 .id(salary.getId())
                 .salary(salary.getSalary())
-                .totalSalary(salary.getTotalSalary())
                 .build();
     }
 

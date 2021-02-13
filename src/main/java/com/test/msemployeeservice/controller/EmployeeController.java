@@ -1,10 +1,13 @@
 package com.test.msemployeeservice.controller;
 
+import com.test.msemployeeservice.entity.Employee;
 import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
 import com.test.msemployeeservice.model.response.EmployeeResponse;
 import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
 import com.test.msemployeeservice.model.WebResponse;
 import com.test.msemployeeservice.service.EmployeeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

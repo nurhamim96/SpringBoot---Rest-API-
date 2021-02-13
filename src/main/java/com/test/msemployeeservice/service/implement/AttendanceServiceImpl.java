@@ -1,11 +1,15 @@
 package com.test.msemployeeservice.service.implement;
 
 import com.test.msemployeeservice.entity.Attendance;
+import com.test.msemployeeservice.entity.Employee;
 import com.test.msemployeeservice.entity.Salary;
 import com.test.msemployeeservice.model.request.CheckInAttendanceRequest;
 import com.test.msemployeeservice.model.request.CheckoutAttendanceRequest;
 import com.test.msemployeeservice.model.response.AttendanceResponse;
+import com.test.msemployeeservice.model.response.CheckInAndCheckOutResponse;
+import com.test.msemployeeservice.model.response.ListAttendanceResponse;
 import com.test.msemployeeservice.repository.AttendanceRepository;
+import com.test.msemployeeservice.repository.EmployeeRepository;
 import com.test.msemployeeservice.repository.SalaryRepository;
 import com.test.msemployeeservice.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,26 +33,35 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Autowired
     private SalaryServiceImpl salaryService;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeServiceImpl employeeService;
+
     @Override
-    public AttendanceResponse checkIn(CheckInAttendanceRequest request) {
+    public CheckInAndCheckOutResponse checkIn(CheckInAttendanceRequest request) {
 
         var date = new Date();
+
+        var temp = salaryService.get(request.getSalaryId());
 
         Attendance attendance = Attendance.builder()
                 .dateOfWork(date)
                 .salaryId(request.getSalaryId())
                 .employeeId(request.getEmployeeId())
-                .createdAt(date)
-                .updateAt(null)
+                .salary(temp.getSalary())
+                .checkIn(date)
+                .checkOut(null)
                 .build();
 
         attendance = attendanceRepository.save(attendance);
 
-        return AttendanceResponse.<AttendanceResponse>builder()
+        return CheckInAndCheckOutResponse.<CheckInAndCheckOutResponse>builder()
                 .id(attendance.getId())
                 .dateOfWork(attendance.getDateOfWork())
-                .createdAt(attendance.getCreatedAt())
-                .updateAt(attendance.getUpdateAt())
+                .checkIn(attendance.getCheckIn())
+                .checkOut(attendance.getCheckOut())
                 .salaryId(attendance.getSalaryId())
                 .employeeId(attendance.getEmployeeId())
                 .build();
@@ -66,13 +79,13 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .totalSalary(attendance.get().getTotalSalary())
                 .firstName(attendance.get().getFirstName())
                 .lastName(attendance.get().getLastName())
-                .createdAt(attendance.get().getCreatedAt())
-                .updateAt(attendance.get().getUpdateAt())
+                .checkIn(attendance.get().getCheckIn())
+                .checkOut(attendance.get().getCheckOut())
                 .build();
     }
 
     @Override
-    public AttendanceResponse checkOut(CheckoutAttendanceRequest request) {
+    public CheckInAndCheckOutResponse checkOut(CheckoutAttendanceRequest request) {
 
         var created = get(request.getId());
 
@@ -80,54 +93,64 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         var temp = salaryService.get(request.getSalaryId());
 
+        var requestEmployee = employeeService.get(request.getEmployeeId());
+
+        var workingDays = 22;
+
+        var totalWorkingDays = attendanceRepository.count(created.getEmployeeId());
+
+        Long calculate = temp.getSalary() / workingDays * totalWorkingDays;
+        System.out.println("INI LOG TOTAL WORKING DAYS " + calculate);
+
         Attendance attendance = Attendance.builder()
                 .id(request.getId())
                 .dateOfWork(created.getDateOfWork())
                 .salaryId(request.getSalaryId())
                 .employeeId(request.getEmployeeId())
-                .createdAt(created.getCreatedAt())
-                .updateAt(date)
+                .totalSalary(calculate)
+                .totalWorkingDays((int) totalWorkingDays)
+                .checkIn(created.getCheckIn())
+                .checkOut(date)
                 .build();
 
         attendance = attendanceRepository.save(attendance);
 
-        var weekdaysInAMonth = 22;
-
-        Salary salary = Salary.builder()
-                .id(attendance.getSalaryId())
-                .salary(temp.getSalary())
-                .totalSalary((temp.getSalary() / weekdaysInAMonth) * 22)
+        Employee employee =Employee.builder()
+                .id(requestEmployee.getId())
+                .birthDate(requestEmployee.getBirthDate())
+                .firstName(requestEmployee.getFirstName())
+                .lastName(requestEmployee.getLastName())
+                .gender(requestEmployee.getGender())
+                .hireDate(requestEmployee.getHireDate())
+                .totalWorkingDays(totalWorkingDays)
+                .totalSalary(calculate)
+                .createdAt(requestEmployee.getCreatedAt())
+                .updateAt(requestEmployee.getUpdateAt())
                 .build();
-        salaryRepository.save(salary);
 
-        return AttendanceResponse.builder()
+        employeeRepository.save(employee);
+
+        return CheckInAndCheckOutResponse.builder()
                 .id(attendance.getId())
                 .dateOfWork(attendance.getDateOfWork())
-                .createdAt(attendance.getCreatedAt())
-                .updateAt(attendance.getUpdateAt())
+                .checkIn(attendance.getCheckIn())
+                .checkOut(attendance.getCheckOut())
                 .salaryId(attendance.getSalaryId())
                 .employeeId(attendance.getEmployeeId())
                 .build();
     }
 
     @Override
-    public List<AttendanceResponse> list() {
+    public List<ListAttendanceResponse> list() {
         return attendanceRepository.findAllAttendance().stream()
-                .map(attendanceEmployee -> AttendanceResponse.builder()
-                        .id(attendanceEmployee.getId())
-                        .employeeId(attendanceEmployee.getEmployeeId())
-                        .firstName(attendanceEmployee.getFirstName())
-                        .lastName(attendanceEmployee.getLastName())
-//                        .birthDate(attendanceEmployee.getBirthDate())
-//                        .gender(attendanceEmployee.getGender())
-//                        .hireDate(attendanceEmployee.getHireDate())
-                        .dateOfWork(attendanceEmployee.getDateOfWork())
-//                        .salary(attendanceEmployee.getSalary())
-//                        .totalSalary(attendanceEmployee.getTotalSalary())
-                        .salaryId(attendanceEmployee.getSalaryId())
-                        .employeeId(attendanceEmployee.getEmployeeId())
-                        .createdAt(attendanceEmployee.getCreatedAt())
-                        .updateAt(attendanceEmployee.getUpdateAt())
+                .map(attendance -> ListAttendanceResponse.builder()
+                        .id(attendance.getId())
+                        .employeeId(attendance.getEmployeeId())
+                        .dateOfWork(attendance.getDateOfWork())
+                        .firstName(attendance.getFirstName())
+                        .lastName(attendance.getLastName())
+                        .checkIn(attendance.getCheckIn())
+                        .checkOut(attendance.getCheckOut())
                         .build())
                 .collect(Collectors.toList());
     }

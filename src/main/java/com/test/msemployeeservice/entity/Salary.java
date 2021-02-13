@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
@@ -27,10 +24,6 @@ public class Salary {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
     private Long salary;
 
-
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
-    private Long totalSalary;
 }

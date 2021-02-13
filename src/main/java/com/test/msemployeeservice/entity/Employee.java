@@ -36,6 +36,11 @@ public class Employee {
 
     private Date hireDate;
 
+    @Column(name = "total_working_days", columnDefinition="int(10) default 0")
+    private Long totalWorkingDays;
+
+    private Long totalSalary;
+
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
 

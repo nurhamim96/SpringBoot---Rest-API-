@@ -5,6 +5,7 @@ import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
 import com.test.msemployeeservice.model.response.EmployeeResponse;
 import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
 import com.test.msemployeeservice.repository.EmployeeRepository;
+import com.test.msemployeeservice.repository.SalaryRepository;
 import com.test.msemployeeservice.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,12 +53,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse get(String employeeNo) {
         Optional<Employee> employee = employeeRepository.findById(employeeNo);
+
         return EmployeeResponse.builder()
                 .id(employee.get().getId())
                 .birthDate(employee.get().getBirthDate())
                 .firstName(employee.get().getFirstName())
                 .lastName(employee.get().getLastName())
+                .gender(employee.get().getGender())
                 .hireDate(employee.get().getHireDate())
+                .totalWorkingDays(employee.get().getTotalWorkingDays())
+                .totalSalary(employee.get().getTotalSalary())
                 .createdAt(employee.get().getCreatedAt())
                 .updateAt(employee.get().getUpdateAt())
                 .build();
@@ -104,6 +109,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                         .lastName(value.getLastName())
                         .hireDate(value.getHireDate())
                         .gender(value.getGender())
+                        .totalWorkingDays(value.getTotalWorkingDays())
+                        .totalSalary(value.getTotalSalary())
                         .createdAt(value.getCreatedAt())
                         .updateAt(value.getUpdateAt())
                         .build())

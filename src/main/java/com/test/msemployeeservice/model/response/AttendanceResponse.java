@@ -23,22 +23,18 @@ public class AttendanceResponse {
 
     private String employeeId;
 
-//    private Date birthDate;
-
     private String firstName;
 
     private String lastName;
+
+    private Integer totalWorkingDays;
 
     private Long salary;
 
     private Long totalSalary;
 
-//    private Gender gender;
+    private Date checkIn;
 
-//    private Date hireDate;
-
-    private Date createdAt;
-
-    private Date updateAt;
+    private Date checkOut;
 
 }

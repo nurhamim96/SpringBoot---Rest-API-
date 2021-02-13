@@ -1,9 +1,9 @@
 package com.test.msemployeeservice.repository;
 
 import com.test.msemployeeservice.entity.Attendance;
-import com.test.msemployeeservice.model.response.AttendanceResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,10 +17,10 @@ public interface AttendanceRepository extends JpaRepository<Attendance, String> 
             nativeQuery = true)
     List<Attendance> findAllAttendance();
 
-    @Query(
-            value = "SELECT COUNT(date_of_work) FROM attendance_employee a WHERE a.id = ?1",
-            nativeQuery = true
-    )
-    Attendance findAttendanceEmployee(@RequestParam("id") String id);
+  @Query(
+          value = "SELECT COUNT(id) FROM attendance_employee WHERE employee_id = ?1",
+          nativeQuery = true
+  )
+  long count(@RequestParam("id") String id);
 
 }

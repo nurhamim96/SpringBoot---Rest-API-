@@ -4,17 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.NumberFormat;
 
-import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SalaryResponse {
+public class CheckInAndCheckOutResponse {
     private String id;
 
-    private Long salary;
+    private Date dateOfWork;
 
+    private String salaryId;
+
+    private String employeeId;
+
+    private Date checkIn;
+
+    private Date checkOut;
 }
