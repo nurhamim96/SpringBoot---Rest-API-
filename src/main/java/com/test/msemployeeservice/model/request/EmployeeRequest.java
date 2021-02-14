@@ -1,4 +1,4 @@
-package com.test.msemployeeservice.model.response;
+package com.test.msemployeeservice.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,25 +7,20 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ListAttendanceResponse {
+public class EmployeeRequest {
     private String id;
 
-    private Date dateOfWork;
-
-    private String salaryId;
-
-    private String  employeeId;
+    private Date birthDate;
 
     private String firstName;
 
     private String lastName;
 
-    private Date checkIn;
+    private String gender;
 
-    private Date checkOut;
+    private Date hireDate;
 }

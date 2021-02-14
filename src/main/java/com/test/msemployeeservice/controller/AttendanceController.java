@@ -1,10 +1,8 @@
 package com.test.msemployeeservice.controller;
 
 import com.test.msemployeeservice.model.WebResponse;
-import com.test.msemployeeservice.model.request.CheckInAttendanceRequest;
-import com.test.msemployeeservice.model.request.CheckoutAttendanceRequest;
-import com.test.msemployeeservice.model.response.AttendanceResponse;
-import com.test.msemployeeservice.model.response.CheckInAndCheckOutResponse;
+import com.test.msemployeeservice.model.request.AttendanceRequest;
+import com.test.msemployeeservice.model.response.AttendanceResponse;;
 import com.test.msemployeeservice.model.response.ListAttendanceResponse;
 import com.test.msemployeeservice.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +20,8 @@ public class AttendanceController {
     private AttendanceService attendanceService;
 
     @PostMapping(value = "/check-in", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<?> create(@RequestBody CheckInAttendanceRequest request) {
-        CheckInAndCheckOutResponse attendanceResponse = attendanceService.checkIn(request);
+    public WebResponse<?> create(@RequestBody AttendanceRequest request) {
+        AttendanceResponse attendanceResponse = attendanceService.checkIn(request);
 
         return WebResponse.builder()
                 .code(HttpStatus.CREATED.value())
@@ -33,8 +31,8 @@ public class AttendanceController {
     }
 
     @PutMapping(value = "/check-out", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<?> update(@RequestBody CheckoutAttendanceRequest request) {
-        CheckInAndCheckOutResponse attendanceResponse = attendanceService.checkOut(request);
+    public WebResponse<?> update(@RequestBody AttendanceRequest request) {
+        AttendanceResponse attendanceResponse = attendanceService.checkOut(request);
 
         return WebResponse.builder()
                 .code(HttpStatus.OK.value())

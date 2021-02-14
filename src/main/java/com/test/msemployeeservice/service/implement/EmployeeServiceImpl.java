@@ -1,11 +1,9 @@
 package com.test.msemployeeservice.service.implement;
 
 import com.test.msemployeeservice.entity.Employee;
-import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
+import com.test.msemployeeservice.model.request.EmployeeRequest;
 import com.test.msemployeeservice.model.response.EmployeeResponse;
-import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
 import com.test.msemployeeservice.repository.EmployeeRepository;
-import com.test.msemployeeservice.repository.SalaryRepository;
 import com.test.msemployeeservice.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,13 +20,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    private UUID uuid = UUID.randomUUID();
 
     @Override
-    public EmployeeResponse create(CreateEmployeeRequest request) {
+    public EmployeeResponse create(EmployeeRequest request) {
 
         var date = new Date();
 
         Employee employee = Employee.builder()
+                .id(uuid.toString())
                 .birthDate(request.getBirthDate())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -69,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse update(UpdateEmployeeRequest request) {
+    public EmployeeResponse update(EmployeeRequest request) {
 
         var created = get(request.getId());
 
@@ -85,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     .createdAt(created.getCreatedAt())
                     .updateAt(date)
                     .build();
-            data = employeeRepository.save(data);
+            data = employeeRepository.update(data);
 
         return EmployeeResponse.builder()
                 .id(data.getId())
@@ -119,7 +120,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void delete(String id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
-        employeeRepository.delete(employee.get());
+        if (!id.isEmpty()) {
+            employeeRepository.delete(id);
+        }
     }
 }

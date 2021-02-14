@@ -1,9 +1,10 @@
 package com.test.msemployeeservice.controller;
 
+import com.test.msemployeeservice.entity.Salary;
 import com.test.msemployeeservice.model.WebResponse;
-import com.test.msemployeeservice.model.request.CreateSalaryRequest;
-import com.test.msemployeeservice.model.request.UpdateSalaryRequest;
+import com.test.msemployeeservice.model.request.SalaryRequest;
 import com.test.msemployeeservice.model.response.SalaryResponse;
+import com.test.msemployeeservice.repository.SalaryRepository;
 import com.test.msemployeeservice.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/salary")
+@RequestMapping("/salary")
 public class SalaryController {
+
 
     @Autowired
     private SalaryService salaryService;
 
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<?> create(@RequestBody CreateSalaryRequest request) {
+    public WebResponse<?> create(@RequestBody SalaryRequest request) {
         SalaryResponse salaryResponse = salaryService.create(request);
 
         return WebResponse.builder()
@@ -31,7 +33,7 @@ public class SalaryController {
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<?> update(@RequestBody UpdateSalaryRequest request) {
+    public WebResponse<?> update(@RequestBody SalaryRequest request) {
         SalaryResponse salaryResponse = salaryService.update(request);
 
         return WebResponse.builder()
@@ -41,7 +43,7 @@ public class SalaryController {
                 .build();
     }
 
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all",  produces = MediaType.APPLICATION_JSON_VALUE)
     public WebResponse<List<SalaryResponse>> salaries() {
         List<SalaryResponse> salaryResponses = salaryService.list();
 
@@ -50,7 +52,6 @@ public class SalaryController {
                 .status(HttpStatus.OK.name())
                 .data(salaryResponses)
                 .build();
-
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,9 +1,22 @@
 package com.test.msemployeeservice.repository;
 
 import com.test.msemployeeservice.entity.Salary;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.test.msemployeeservice.model.response.SalaryResponse;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface SalaryRepository extends JpaRepository<Salary, String> {
+import java.util.List;
+import java.util.Optional;
+
+public interface SalaryRepository {
+
+    Salary save(Salary salary);
+
+    Salary update(Salary salary);
+
+    Optional<Salary> findById(String id);
+
+    List<Salary> findAll();
+
+    void delete(String id);
+
 }

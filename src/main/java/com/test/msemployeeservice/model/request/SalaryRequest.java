@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSalaryRequest {
+public class SalaryRequest {
+
+    private String id;
 
     private Long salary;
 }

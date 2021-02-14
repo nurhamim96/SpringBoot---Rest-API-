@@ -1,19 +1,18 @@
 package com.test.msemployeeservice.service;
 
 
-import com.test.msemployeeservice.model.request.CreateSalaryRequest;
-import com.test.msemployeeservice.model.request.UpdateSalaryRequest;
+import com.test.msemployeeservice.model.request.SalaryRequest;
 import com.test.msemployeeservice.model.response.SalaryResponse;
 
 import java.util.List;
 
 public interface SalaryService {
 
-    SalaryResponse create(CreateSalaryRequest request);
+    SalaryResponse create(SalaryRequest request);
 
     SalaryResponse get(String id);
 
-    SalaryResponse update(UpdateSalaryRequest request);
+    SalaryResponse update(SalaryRequest request);
 
     List<SalaryResponse> list();
 

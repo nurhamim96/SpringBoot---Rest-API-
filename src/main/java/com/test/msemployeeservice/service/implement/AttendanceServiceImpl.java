@@ -2,23 +2,19 @@ package com.test.msemployeeservice.service.implement;
 
 import com.test.msemployeeservice.entity.Attendance;
 import com.test.msemployeeservice.entity.Employee;
-import com.test.msemployeeservice.entity.Salary;
-import com.test.msemployeeservice.model.request.CheckInAttendanceRequest;
-import com.test.msemployeeservice.model.request.CheckoutAttendanceRequest;
+import com.test.msemployeeservice.model.request.AttendanceRequest;
 import com.test.msemployeeservice.model.response.AttendanceResponse;
-import com.test.msemployeeservice.model.response.CheckInAndCheckOutResponse;
 import com.test.msemployeeservice.model.response.ListAttendanceResponse;
 import com.test.msemployeeservice.repository.AttendanceRepository;
 import com.test.msemployeeservice.repository.EmployeeRepository;
-import com.test.msemployeeservice.repository.SalaryRepository;
 import com.test.msemployeeservice.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +22,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Autowired
     private AttendanceRepository attendanceRepository;
-
-    @Autowired
-    private SalaryRepository salaryRepository;
 
     @Autowired
     private SalaryServiceImpl salaryService;
@@ -39,25 +32,28 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Autowired
     private EmployeeServiceImpl employeeService;
 
+    private UUID uuid = UUID.randomUUID();
+
     @Override
-    public CheckInAndCheckOutResponse checkIn(CheckInAttendanceRequest request) {
+    public AttendanceResponse checkIn(AttendanceRequest request) {
 
         var date = new Date();
 
         var temp = salaryService.get(request.getSalaryId());
 
         Attendance attendance = Attendance.builder()
-                .dateOfWork(date)
-                .salaryId(request.getSalaryId())
+                .id(uuid.toString())
                 .employeeId(request.getEmployeeId())
-                .salary(temp.getSalary())
+                .salaryId(request.getSalaryId())
+                .dateOfWork(date)
+//                .salary(temp.getSalary())
                 .checkIn(date)
                 .checkOut(null)
                 .build();
 
         attendance = attendanceRepository.save(attendance);
 
-        return CheckInAndCheckOutResponse.<CheckInAndCheckOutResponse>builder()
+        return AttendanceResponse.<AttendanceResponse>builder()
                 .id(attendance.getId())
                 .dateOfWork(attendance.getDateOfWork())
                 .checkIn(attendance.getCheckIn())
@@ -75,17 +71,13 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .employeeId(attendance.get().getEmployeeId())
                 .salaryId(attendance.get().getSalaryId())
                 .dateOfWork(attendance.get().getDateOfWork())
-                .salary(attendance.get().getSalary())
-                .totalSalary(attendance.get().getTotalSalary())
-                .firstName(attendance.get().getFirstName())
-                .lastName(attendance.get().getLastName())
                 .checkIn(attendance.get().getCheckIn())
                 .checkOut(attendance.get().getCheckOut())
                 .build();
     }
 
     @Override
-    public CheckInAndCheckOutResponse checkOut(CheckoutAttendanceRequest request) {
+    public AttendanceResponse checkOut(AttendanceRequest request) {
 
         var created = get(request.getId());
 
@@ -108,29 +100,29 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .salaryId(request.getSalaryId())
                 .employeeId(request.getEmployeeId())
                 .totalSalary(calculate)
-                .totalWorkingDays((int) totalWorkingDays)
+                .totalWorkingDays((long) totalWorkingDays)
                 .checkIn(created.getCheckIn())
                 .checkOut(date)
                 .build();
 
-        attendance = attendanceRepository.save(attendance);
+        attendance = attendanceRepository.update(attendance);
 
-        Employee employee =Employee.builder()
+        Employee employee = Employee.builder()
                 .id(requestEmployee.getId())
                 .birthDate(requestEmployee.getBirthDate())
                 .firstName(requestEmployee.getFirstName())
                 .lastName(requestEmployee.getLastName())
                 .gender(requestEmployee.getGender())
                 .hireDate(requestEmployee.getHireDate())
-                .totalWorkingDays(totalWorkingDays)
+                .totalWorkingDays((long) totalWorkingDays)
                 .totalSalary(calculate)
                 .createdAt(requestEmployee.getCreatedAt())
                 .updateAt(requestEmployee.getUpdateAt())
                 .build();
 
-        employeeRepository.save(employee);
+        employeeRepository.update(employee);
 
-        return CheckInAndCheckOutResponse.builder()
+        return AttendanceResponse.builder()
                 .id(attendance.getId())
                 .dateOfWork(attendance.getDateOfWork())
                 .checkIn(attendance.getCheckIn())
@@ -142,9 +134,10 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public List<ListAttendanceResponse> list() {
-        return attendanceRepository.findAllAttendance().stream()
+        return attendanceRepository.findAll().stream()
                 .map(attendance -> ListAttendanceResponse.builder()
                         .id(attendance.getId())
+                        .salaryId(attendance.getSalaryId())
                         .employeeId(attendance.getEmployeeId())
                         .dateOfWork(attendance.getDateOfWork())
                         .firstName(attendance.getFirstName())
@@ -157,8 +150,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public void delete(String id) {
-        Optional<Attendance> attendance = attendanceRepository.findById(id);
-        attendanceRepository.delete(attendance.get());
+        if (!id.isEmpty()) {
+            attendanceRepository.delete(id);
+        }
     }
 
 }

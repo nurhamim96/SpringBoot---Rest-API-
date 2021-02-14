@@ -19,6 +19,8 @@
 		<open-api.version>1.5.4</open-api.version>
 		<swagger-ui.version>2.7.0</swagger-ui.version>
 		<swagger2.version>2.7.0</swagger2.version>
+		<junit.version>5.7.0</junit.version>
+		<mysql.version>8.0.23</mysql.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -33,10 +35,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

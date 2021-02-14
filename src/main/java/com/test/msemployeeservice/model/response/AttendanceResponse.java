@@ -1,8 +1,5 @@
 package com.test.msemployeeservice.model.response;
 
-import com.test.msemployeeservice.config.constant.Gender;
-import com.test.msemployeeservice.entity.Employee;
-import com.test.msemployeeservice.entity.Salary;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,17 +18,7 @@ public class AttendanceResponse {
 
     private String salaryId;
 
-    private String employeeId;
-
-    private String firstName;
-
-    private String lastName;
-
-    private Integer totalWorkingDays;
-
-    private Long salary;
-
-    private Long totalSalary;
+    private String  employeeId;
 
     private Date checkIn;
 

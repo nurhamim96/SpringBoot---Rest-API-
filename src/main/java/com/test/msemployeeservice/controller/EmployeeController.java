@@ -1,13 +1,9 @@
 package com.test.msemployeeservice.controller;
 
-import com.test.msemployeeservice.entity.Employee;
-import com.test.msemployeeservice.model.request.CreateEmployeeRequest;
-import com.test.msemployeeservice.model.response.EmployeeResponse;
-import com.test.msemployeeservice.model.request.UpdateEmployeeRequest;
+import com.test.msemployeeservice.model.request.EmployeeRequest;
 import com.test.msemployeeservice.model.WebResponse;
+import com.test.msemployeeservice.model.response.EmployeeResponse;
 import com.test.msemployeeservice.service.EmployeeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +19,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping(value = "/add",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<?> create(@RequestBody CreateEmployeeRequest request) {
+    public WebResponse<?> create(@RequestBody EmployeeRequest request) {
         EmployeeResponse employeeResponse = employeeService.create(request);
 
         return WebResponse.builder()
@@ -34,7 +30,7 @@ public class EmployeeController {
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WebResponse<?> update(@RequestBody UpdateEmployeeRequest request) {
+    public WebResponse<?> update(@RequestBody EmployeeRequest request) {
         EmployeeResponse employeeResponse = employeeService.update(request);
 
         return WebResponse.builder()

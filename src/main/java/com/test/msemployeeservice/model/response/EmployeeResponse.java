@@ -1,6 +1,5 @@
 package com.test.msemployeeservice.model.response;
 
-import com.test.msemployeeservice.config.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,14 +20,13 @@ public class EmployeeResponse {
 
     private String lastName;
 
-    private Gender gender;
+    private String gender;
 
     private Date hireDate;
 
     private Long totalWorkingDays;
 
     private Long totalSalary;
-
 
     private Date createdAt;
 
