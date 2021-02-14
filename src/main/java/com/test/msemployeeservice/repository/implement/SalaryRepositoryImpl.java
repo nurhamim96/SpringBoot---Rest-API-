@@ -27,9 +27,10 @@ public class SalaryRepositoryImpl implements SalaryRepository {
     private JdbcTemplate jdbcTemplate;
 
     RowMapper<Salary> rowMapper = (rs, rowNum) -> {
-        Salary salary = new Salary();
-        salary.setId(rs.getString("id"));
-        salary.setSalary(rs.getLong("salary"));
+        Salary salary = Salary.builder()
+                .id(rs.getString("id"))
+                .salary(rs.getLong("salary"))
+                .build();
         return salary;
     };
 

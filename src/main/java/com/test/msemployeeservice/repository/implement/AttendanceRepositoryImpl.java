@@ -27,15 +27,16 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
     private JdbcTemplate jdbcTemplate;
 
     RowMapper<Attendance> rowMapper = (rs, rowNum) -> {
-        Attendance attendance = new Attendance();
-        attendance.setId(rs.getString("id"));
-        attendance.setEmployeeId(rs.getString("employee_id"));
-        attendance.setSalaryId(rs.getString("salary_id"));
-        attendance.setDateOfWork(rs.getDate("date_of_work"));
-        attendance.setFirstName(rs.getString("first_name"));
-        attendance.setLastName(rs.getString("last_name"));
-        attendance.setCheckIn(rs.getTimestamp("check_in"));
-        attendance.setCheckOut(rs.getTimestamp("check_out"));
+        Attendance attendance = Attendance.builder()
+                .id(rs.getString("id"))
+                .employeeId(rs.getString("employee_id"))
+                .salaryId(rs.getString("salary_id"))
+                .dateOfWork(rs.getDate("date_of_work"))
+                .firstName(rs.getString("first_name"))
+                .lastName(rs.getString("last_name"))
+                .checkIn(rs.getTimestamp("check_in"))
+                .checkOut(rs.getTimestamp("check_out"))
+                .build();
         return attendance;
     };
 

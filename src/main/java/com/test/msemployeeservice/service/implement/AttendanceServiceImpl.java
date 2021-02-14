@@ -92,7 +92,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         var totalWorkingDays = attendanceRepository.count(created.getEmployeeId());
 
         Long calculate = temp.getSalary() / workingDays * totalWorkingDays;
-        System.out.println("INI LOG TOTAL WORKING DAYS " + calculate);
+        System.out.println("INI LOG TOTAL WORKING DAYS " + totalWorkingDays);
 
         Attendance attendance = Attendance.builder()
                 .id(request.getId())

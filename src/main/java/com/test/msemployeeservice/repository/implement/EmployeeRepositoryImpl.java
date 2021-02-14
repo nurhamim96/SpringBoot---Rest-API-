@@ -24,17 +24,18 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     private JdbcTemplate jdbcTemplate;
 
     RowMapper<Employee> rowMapper = (rs, rowNum) -> {
-        Employee employee = new Employee();
-        employee.setId(rs.getString("id"));
-        employee.setFirstName(rs.getString("first_name"));
-        employee.setLastName(rs.getString("last_name"));
-        employee.setBirthDate(rs.getDate("birth_date"));
-        employee.setGender(rs.getString("gender"));
-        employee.setHireDate(rs.getDate("hire_date"));
-        employee.setTotalWorkingDays(rs.getLong("total_working_days"));
-        employee.setTotalSalary(rs.getLong("total_salary"));
-        employee.setCreatedAt(rs.getTimestamp("created_at"));
-        employee.setUpdateAt(rs.getTimestamp("updated_at"));
+        Employee employee = Employee.builder()
+                .id(rs.getString("id"))
+                .firstName(rs.getString("first_name"))
+                .lastName(rs.getString("last_name"))
+                .birthDate(rs.getDate("birth_date"))
+                .gender(rs.getString("gender"))
+                .hireDate(rs.getDate("hire_date"))
+                .totalWorkingDays(rs.getLong("total_working_days"))
+                .totalSalary(rs.getLong("total_salary"))
+                .createdAt(rs.getTimestamp("created_at"))
+                .updateAt(rs.getTimestamp("updated_at"))
+                .build();
         return employee;
     };
 
